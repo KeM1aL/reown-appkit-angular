@@ -1,20 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { createAppKit } from '@reown/appkit';
-import { mainnet, arbitrum } from '@reown/appkit/networks';
+import { AppKit, createAppKit } from '@reown/appkit';
+import { mainnet } from '@reown/appkit/networks';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   template: `
-    <h1>Hello from {{ name }}!</h1>
-    <a target="_blank" href="https://angular.dev/overview">
-      Learn more about Angular
+    <h1>Angular: Test application for <a href="https://github.com/reown-com/appkit" target="_blank">reown-com/appkit</a>>!</h1>
+    <a href="#" (click)="connect($event)">
+      Connect
     </a>
   `,
 })
 export class App implements OnInit {
+  modal?: AppKit;
+
+  connect(e: Event) {
+    e.preventDefault();
+    this.modal?.open();
+  }
+
   ngOnInit(): void {
     // 1. Get a project ID at https://cloud.reown.com
     const projectId = '5e2fb270c5d88bc91b5afcd65ad4fce7';
@@ -36,7 +43,7 @@ export class App implements OnInit {
     };
 
     // 3. Create the modal
-    const modal = createAppKit({
+    this.modal = createAppKit({
       adapters: [wagmiAdapter],
       networks: [mainnet],
       metadata,
